@@ -2,11 +2,14 @@ package com.onirica.onirica;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
 @SpringBootApplication
-public class OniricaApplication {
+public class OniricaApplication implements WebMvcConfigurer {
 
 	public static void main(String[] args) {
 		Dotenv dotenv = Dotenv.configure().load();
@@ -17,7 +20,12 @@ public class OniricaApplication {
 		SpringApplication.run(OniricaApplication.class, args);
 
 		System.out.println("Connected Successfully");
-		SpringApplication.run(OniricaApplication.class, args);
 	}
 
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry
+			.addResourceHandler("/audio/**")
+			.addResourceLocations("classpath:/static/audio/");
+	}
 }

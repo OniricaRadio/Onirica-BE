@@ -1,11 +1,12 @@
 package com.onirica.onirica.controller;
 
-import java.util.List;
+import com.onirica.onirica.model.Song;
+import com.onirica.onirica.service.SongService;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -13,28 +14,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class SongController {
 
-    @GetMapping
-    public List<Song> getSongs() {
-        return List.of(
-            new Song("Strawberry", "Doss", "/audio/Doss-Strawberry.mp3" + //
-                                "")
-        );
+    private final SongService songService;
+
+    @Autowired
+    public SongController(SongService songService) {
+        this.songService = songService;
     }
 
-    static class Song {
-        private String title;
-        private String artist;
-        private String url;
+    @GetMapping
+    public List<Song> getAllSongs() {
+        return songService.getAllSongs();
+    }
 
-        public Song(String title, String artist, String url) {
-            this.title = title;
-            this.artist = artist;
-            this.url = url;
-        }
+    @PostMapping
+    public Song saveSong(@RequestBody Song song) {
+        return songService.saveSong(song);
+    }
 
-        // Getters
-        public String getTitle() { return title; }
-        public String getArtist() { return artist; }
-        public String getUrl() { return url; }
+    @GetMapping("/{id}")
+    public Song getSongById(@PathVariable Long id) {
+        return songService.getSongById(id)
+                .orElseThrow(() -> new RuntimeException("Song not found with id " + id));
+    }
+
+    @PutMapping("/{id}")
+    public Song updateSong(@PathVariable Long id, @RequestBody Song song) {
+        return songService.updateSong(id, song);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteSong(@PathVariable Long id) {
+        songService.deleteSong(id);
     }
 }
