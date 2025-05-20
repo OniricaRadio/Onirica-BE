@@ -4,9 +4,11 @@ import com.onirica.onirica.model.Song;
 import com.onirica.onirica.service.SongService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -14,12 +16,8 @@ import java.util.List;
 
 public class SongController {
 
-    private final SongService songService;
-
     @Autowired
-    public SongController(SongService songService) {
-        this.songService = songService;
-    }
+    private SongService songService;
 
     @GetMapping
     public List<Song> getAllSongs() {
@@ -27,19 +25,23 @@ public class SongController {
     }
 
     @PostMapping
-    public Song saveSong(@RequestBody Song song) {
+    public Song createSong(@RequestBody Song song) {
         return songService.saveSong(song);
     }
 
-    @GetMapping("/{id}")
-    public Song getSongById(@PathVariable Long id) {
-        return songService.getSongById(id)
-                .orElseThrow(() -> new RuntimeException("Song not found with id " + id));
-    }
-
     @PutMapping("/{id}")
-    public Song updateSong(@PathVariable Long id, @RequestBody Song song) {
-        return songService.updateSong(id, song);
+    public ResponseEntity<Song> updateSong(@PathVariable Long id, @RequestBody Song updatedSong) {
+        Optional<Song> optionalSong = songService.getSongById(id);
+        if (optionalSong.isEmpty()) return ResponseEntity.notFound().build();
+
+        Song existing = optionalSong.get();
+        existing.setTitle(updatedSong.getTitle());
+        existing.setArtist(updatedSong.getArtist());
+        existing.setUrl(updatedSong.getUrl());
+        //existing.setCoverUrl(updatedSong.getCoverUrl());
+
+        songService.saveSong(existing);
+        return ResponseEntity.ok(existing);
     }
 
     @DeleteMapping("/{id}")

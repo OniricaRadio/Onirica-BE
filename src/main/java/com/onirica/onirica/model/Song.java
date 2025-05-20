@@ -1,5 +1,4 @@
 package com.onirica.onirica.model;
-import jakarta.annotation.Generated;
 import jakarta.persistence.*;
 
 @Entity

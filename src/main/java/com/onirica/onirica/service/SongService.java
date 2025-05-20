@@ -2,7 +2,6 @@ package com.onirica.onirica.service;
 
 import com.onirica.onirica.model.Song;
 import com.onirica.onirica.repository.SongRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +12,7 @@ public class SongService {
 
     private final SongRepository songRepository;
 
-    @Autowired
+    
     public SongService(SongRepository songRepository) {
         this.songRepository = songRepository;
     }
