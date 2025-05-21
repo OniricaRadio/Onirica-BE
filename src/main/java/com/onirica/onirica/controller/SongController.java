@@ -38,8 +38,11 @@ public class SongController {
         existing.setTitle(updatedSong.getTitle());
         existing.setArtist(updatedSong.getArtist());
         existing.setUrl(updatedSong.getUrl());
-        //existing.setCoverUrl(updatedSong.getCoverUrl());
-
+        
+        if (!updatedSong.getId().equals(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+        
         songService.saveSong(existing);
         return ResponseEntity.ok(existing);
     }
