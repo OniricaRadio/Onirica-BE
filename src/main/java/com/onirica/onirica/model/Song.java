@@ -13,7 +13,7 @@ public class Song {
     private String artist;
     private String url;
 
-    // Constructors
+    
     public Song() {}
 
     public Song(String title, String artist, String url) {
@@ -22,7 +22,7 @@ public class Song {
         this.url = url;
     }
 
-    // Getters and setters
+    
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }
