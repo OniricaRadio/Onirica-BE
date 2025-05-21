@@ -1,10 +1,12 @@
 package com.onirica.onirica.controller;
 
+import com.onirica.onirica.dto.SongDTO;
 import com.onirica.onirica.model.Song;
 import com.onirica.onirica.service.SongService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,9 +27,13 @@ public class SongController {
     }
 
     @PostMapping
-    public Song createSong(@RequestBody Song song) {
-        return songService.saveSong(song);
-    }
+    public ResponseEntity<?> createSong(@Validated @RequestBody SongDTO songDTO) {
+    
+    Song song = new Song(songDTO.getTitle(), songDTO.getArtist(), songDTO.getUrl());
+
+    Song savedSong = songService.saveSong(song);
+    return ResponseEntity.ok(savedSong);
+}
 
     @PutMapping("/{id}")
     public ResponseEntity<Song> updateSong(@PathVariable Long id, @RequestBody Song updatedSong) {
