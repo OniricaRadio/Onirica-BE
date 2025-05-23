@@ -3,6 +3,7 @@ package com.onirica.onirica.service;
 import com.onirica.onirica.model.Song;
 import com.onirica.onirica.repository.SongRepository;
 import org.springframework.stereotype.Service;
+import com.onirica.onirica.util.SanitizerUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,8 @@ public class SongService {
     }
 
     public Song saveSong(Song song) {
+        song.setTitle(SanitizerUtil.sanitize(song.getTitle()));
+        song.setUrl(SanitizerUtil.sanitize(song.getUrl()));
         return songRepository.save(song);
     }
 

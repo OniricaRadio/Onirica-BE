@@ -1,5 +1,7 @@
 package com.onirica.onirica.model;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "songs")
@@ -9,11 +11,15 @@ public class Song {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Title must not be blank")
     private String title;
+
+    @NotBlank(message = "Artist must not be blank")
     private String artist;
+
+    @NotBlank(message = "URL must not be blank")
     private String url;
 
-    
     public Song() {}
 
     public Song(String title, String artist, String url) {
@@ -22,7 +28,6 @@ public class Song {
         this.url = url;
     }
 
-    
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }
