@@ -38,7 +38,6 @@ public class SongService {
                     song.setTitle(updatedSong.getTitle());
                     song.setArtist(updatedSong.getArtist());
                     song.setUrl(updatedSong.getUrl());
-                    //song.setCoverUrl(updatedSong.getCoverUrl());
                     return songRepository.save(song);
                 })
                 .orElseThrow(() -> new RuntimeException("Song not found with id " + id));
